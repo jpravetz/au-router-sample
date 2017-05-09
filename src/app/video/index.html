@@ -5,5 +5,16 @@
       <p class="card-text">${message}</p>
       <a href="#" class="btn btn-primary">Maybe save changes</a>
     </div>
+
+    <div class="card-block">
+      <h2 class="card-title">Links at this router level:</h2>
+      <ul class="list-group list-group-flush">
+        <li repeat.for="row of router.navigation" class="list-group-item">
+          <a class="card-link" href.bind="row.href">${row.title}</a>
+        </li>
+      </ul>
+    </div>
+
+
   </div>
 </template>
