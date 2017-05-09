@@ -1,0 +1,37 @@
+<template>
+  <!--<require from="./app-sidebar/index"></require>-->
+  <!--<require from="./app-alerts/index"></require>-->
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            Sidebar
+          </div>
+          <div class="card-block">
+            <h4 class="card-title">Pages</h4>
+            <p class="card-text">Routes at this level</p>
+            <ul>
+              <li><a route-href="route: dashboard">Dashboard</a></li>
+              <li><a route-href="route: video">Video</a></li>
+              <li><a route-href="route: profile">Profile</a></li>
+              <li><a route-href="route: login">Login</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8">
+        <div class="card">
+          <div class="card-header">
+            Content goes in card block below
+          </div>
+          <div class="card-block">
+            <router-view name="content"></router-view>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
