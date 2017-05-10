@@ -20,7 +20,7 @@ export class RouteFactory {
     options = options || {};
     const rootFolder = options.folder ? ('./' + options.folder + '/') : './';
     const result = this.routeData.map(r => {
-      let moduleId = rootFolder + (r.folder || r.name) + '/index';
+      let moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
       let auth = (typeof options.auth === 'boolean') ? options.auth : r.auth;
       let nav = (typeof options.nav === 'boolean') ? options.nav : r.nav;
       let route = options.routePath ? (options.routePath + '/' + r.route) : r.route;

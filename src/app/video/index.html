@@ -7,13 +7,15 @@
     </div>
 
     <div class="card-block">
-      <h2 class="card-title">Links at this router level:</h2>
+      <h2 class="card-title">router.navigation array:</h2>
       <ul class="list-group list-group-flush">
         <li repeat.for="row of router.navigation" class="list-group-item">
           <a class="card-link" href.bind="row.href">${row.title}</a>
         </li>
       </ul>
     </div>
+
+    <router-nav router="router"></router-nav>
 
 
   </div>

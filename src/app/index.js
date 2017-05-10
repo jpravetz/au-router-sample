@@ -1,13 +1,25 @@
 import {inject, LogManager} from 'aurelia-framework';
 import {AppRoutes} from './app-routes';
 
-let logger = LogManager.getLogger('app');
+let logger = LogManager.getLogger('app.app');
 
 @inject(AppRoutes)
 export class App {
   constructor (appRoutes) {
     this.appRoutes = appRoutes;
     this.routeOptions = { viewPort: 'content' };
+    logger.debug('constructor');
+  }
+
+  activate () {
+    logger.debug('activate...');
+    setTimeout(() => {
+      logger.debug('activated');
+    }, 500);
+  }
+
+  attached () {
+    logger.debug('attached');
   }
 
   configureRouter (config, router) {
@@ -15,8 +27,8 @@ export class App {
     config.title = 'App Pages';
     const routeConfig = this.appRoutes.routes(this.routeOptions);
     config.map(routeConfig);
-    logger.debug('Configured page routes', routeConfig.map(c => c.name));
-    logger.debug('Configured page routes', this.router.navigation);
+    logger.debug('Configured app routes', routeConfig.map(c => c.name));
+    logger.debug('Configured app routes', this.router.navigation);
   }
 
   get routes () {

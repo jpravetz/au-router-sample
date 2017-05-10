@@ -2,9 +2,6 @@
   <require from="bootstrap/css/bootstrap.css"></require>
 
   <div class="container" if.bind="!loaded || error">
-    <div class="card-header">
-      Featured
-    </div>
     <div class="card-block">
       <h1 class="card-title">${message}</h1>
       <p if.bind="error" class="card-text">If this problem persists, try clearing your session</p>

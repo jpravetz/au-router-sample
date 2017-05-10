@@ -1,5 +1,9 @@
-export class DashboardPage {
+import { LogManager} from 'aurelia-framework';
+
+let logger = LogManager.getLogger('app.video');
+
+export class VideoPage {
   constructor () {
-    this.message = 'dashboard top';
+    logger.debug('constructor');
   }
 }
