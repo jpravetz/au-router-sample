@@ -7,6 +7,11 @@
 
     <div class="card-block">
       <h1 class="card-title">Video List</h1>
+      <ul class="list-group list-group-flush">
+        <li repeat.for="video of videoPage.videos" class="list-group-item">
+          <a class="card-link" route-href="route: edit; params.bind: { id: video.id }">"${video.name}"</a>
+        </li>
+      </ul>
     </div>
 
     <router-nav router.bind="router"></router-nav>

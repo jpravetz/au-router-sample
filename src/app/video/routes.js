@@ -8,17 +8,20 @@ export class Routes extends RouteFactory {
 
   get routeData () {
     return [
+      // {
+      //   route: '',
+      //   redirect: 'list'
+      // },
       {
-        route: '',
-        redirect: 'list'
-      },
-      {
-        route: 'list',
+        route: ['list',''],
         name: 'list',
         title: 'List'
       },
       {
-        route: 'edit'
+        route: 'edit/:id',
+        name: 'edit',
+        href: 'edit',
+        nav: false
       }
     ];
   }
