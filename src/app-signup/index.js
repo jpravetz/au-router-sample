@@ -7,4 +7,9 @@ export class AppLogin {
     logger.debug('constructor');
   }
 
+  login () {
+    localStorage.setItem('au-router-sample-login', true);
+    this.router.navigate('#/app/dashboard');
+  }
+
 }

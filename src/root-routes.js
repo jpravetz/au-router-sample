@@ -13,7 +13,8 @@ export class RootRoutes extends RouteFactory {
       },
       {
         route: 'app',
-        name: 'app'
+        name: 'app',
+        auth: true
       },
       {
         route: 'app-login',
