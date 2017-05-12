@@ -172,7 +172,9 @@ define('root-routes',['exports', './route-factory'], function (exports, _routeFa
       key: 'routeData',
       get: function get() {
         return [{
-          route: ['app', ''],
+          route: '', redirect: 'app'
+        }, {
+          route: 'app',
           name: 'app'
         }, {
           route: 'app-login',
@@ -235,31 +237,35 @@ define('route-factory',['exports'], function (exports) {
       options = options || {};
       var rootFolder = options.folder ? './' + options.folder + '/' : './';
       var result = this.routeData.map(function (r) {
-        var moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
-        var auth = getValue('boolean', options.auth, r.auth, false);
-        var nav = getValue('boolean', options.nav, r.nav, true);
-        var route = options.routePath ? options.routePath + '/' + r.route : r.route;
-        var href = r.href;
-        if (!href && options.href === true) {
-          href = typeof r.route === 'string' ? r.route : r.route[0];
-        }
-        var item = {
-          route: route,
-          name: r.name || r.route,
-          title: r.title || r.route,
-          auth: auth,
-          nav: nav
-        };
-        if (href !== undefined) {
-          item.href = href;
-        }
-        if (options.viewPort) {
-          item.viewPorts = {};
-          item.viewPorts[options.viewPort] = { moduleId: moduleId };
+        if (r.redirect) {
+          return r;
         } else {
-          item.moduleId = moduleId;
+          var moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
+          var auth = getValue('boolean', options.auth, r.auth, false);
+          var nav = getValue('boolean', options.nav, r.nav, true);
+          var route = options.routePath ? options.routePath + '/' + r.route : r.route;
+          var href = r.href;
+          if (!href && options.href === true) {
+            href = typeof r.route === 'string' ? r.route : r.route[0];
+          }
+          var item = {
+            route: route,
+            name: r.name || r.route,
+            title: r.title || r.route,
+            auth: auth,
+            nav: nav
+          };
+          if (href !== undefined) {
+            item.href = href;
+          }
+          if (options.viewPort) {
+            item.viewPorts = {};
+            item.viewPorts[options.viewPort] = { moduleId: moduleId };
+          } else {
+            item.moduleId = moduleId;
+          }
+          return item;
         }
-        return item;
       });
       return result;
     };
@@ -352,8 +358,12 @@ define('app/app-routes',['exports', '../route-factory'], function (exports, _rou
       key: 'routeData',
       get: function get() {
         return [{
+          route: '',
+          redirect: 'dashboard'
+        }, {
           route: ['dashboard', ''],
-          name: 'dashboard'
+          name: 'dashboard',
+          title: 'Dashboard'
         }, {
           route: 'video'
         }, {
@@ -591,7 +601,7 @@ define('resources/elements/index',['exports'], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = ['router-nav.html'];
+  exports.default = ['router-nav.html', 'text-filler.html'];
 });
 define('resources/value-converters/index',["exports"], function (exports) {
   "use strict";
@@ -606,7 +616,8 @@ define('text!app/index.html', ['module'], function(module) { module.exports = "<
 define('text!app-login/index.html', ['module'], function(module) { module.exports = "<template>\n\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-lg-4 col-md-5 offset-lg-3 offset-md-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Logo here\n          </div>\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">Login page</h4>\n            <p class=\"card-text\">Other pages</p>\n            <ul>\n              <li><a href=\"#\" click.trigger=\"navTo('#/app/dashboard')\">navTo('#/app/dashboard')</a></li>\n              <!--<li><a route-href=\"route: video\">Video</a></li>-->\n              <li><a route-href=\"route: app\">route-href=\"route: app\"</a></li>\n              <li><a route-href=\"route: signup\">route-href=\"route: signup\"</a></li>\n            </ul>\n          </div>\n          <router-nav router.bind=\"router\"></router-nav>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</template>\n"; });
 define('text!app-signup/index.html', ['module'], function(module) { module.exports = "<template>\n\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-lg-4 col-md-5 offset-lg-3 offset-md-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Logo here\n          </div>\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">Signup page</h4>\n            <p class=\"card-text\">Other pages</p>\n            <ul>\n              <li><a href=\"#\" click.trigger=\"navTo('#/app/dashboard')\">navTo('#/app/dashboard')</a></li>\n              <!--<li><a route-href=\"route: video\">Video</a></li>-->\n              <li><a route-href=\"route: app\">route-href=\"route: app</a></li>\n              <li><a route-href=\"route: login\">route-href=\"route: login</a></li>\n            </ul>\n          </div>\n          <router-nav router.bind=\"router\"></router-nav>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</template>\n"; });
 define('text!app/dashboard/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/dashboard/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Dashboard Card</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n  </div>\n</template>\n"; });
-define('text!app/profile/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/profile/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Profile Card</h1>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n  </div>\n</template>\n"; });
+define('text!app/profile/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/profile/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Profile Card</h1>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n    <div class=\"card-block\">\n      <text-filler></text-filler>\n    </div>\n\n  </div>\n</template>\n"; });
 define('text!app/video/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/video/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Video</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n\n  </div>\n</template>\n"; });
 define('text!resources/elements/router-nav.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\n  <div class=\"card-block\">\n    <h4 class=\"card-title\">router.navigation</h4>\n    <ul class=\"list-group list-group-flush\">\n      <li repeat.for=\"row of router.navigation\" class=\"list-group-item\">\n        <a class=\"card-link\" href.bind=\"row.href\">\"${row.title}\"</a>\n      </li>\n    </ul>\n  </div>\n</template>\n"; });
+define('text!resources/elements/text-filler.html', ['module'], function(module) { module.exports = "<template>\n  <h1>Text filler</h1>\n\n  <p>Lorem ipsum dolor sit amet, vel cu equidem platonem vituperata, et erroribus\n    adipiscing sadipscing quo. Malorum invenire nec cu, ex possit scriptorem nam.\n    Maiestatis reprimique eos in, te eam diam facer alterum, legimus pertinax pro\n    no. Ei\n    ius imperdiet dissentiunt liberavisse.\n  </p>\n  <p>\n    Per et zril munere fuisset. Usu cu omittantur suscipiantur. Id vix aperiam\n    maiorum,\n    in bonorum conceptam mel. Inimicus expetenda democritum qui ad.\n  </p>\n  <p>\n    Vidit utinam munere eam ex. Qui iuvaret percipitur adversarium ei. Sea te\n    eruditi\n    praesent. Ad vix habeo utamur electram, at paulo delenit ius.\n  </p>\n  <p>\n    Vidisse volutpat ex nec, cu idque simul voluptatum his. In vel iusto doctus, et\n    quis\n    nominati cum. Ei purto legere recusabo sed, mel invenire patrioque et. Eu quo\n    iuvaret mentitum theophrastus, munere nusquam id cum, ei eos tacimates perpetua.\n    Per\n    no porro facete albucius.\n  </p>\n  <p>\n    Dicit aliquip dolorem ex usu, detraxit partiendo posidonium id vix. Meliore\n    contentiones id vix, pro te dicam utroque volumus. Possit omittam et vel, ius\n    sumo\n    dolorem civibus te, cu sed hinc iisque lucilius. Ex vis eius zril legere, harum\n    nominati his in. Dissentiunt ullamcorper deterruisset nec id.\n  </p>\n  <p>\n    Per paulo admodum consequat id, habemus explicari conclusionemque vix te. Ea has\n    graeci labitur, id quo viderer placerat. Ex nam esse noluisse, at cum ludus\n    omnium\n    definiebas. Regione postulant vituperatoribus ut mel, audiam dolorum te his. At\n    dicam dignissim persequeris per, eam ea quas omnesque.\n  </p>\n  <p>\n    Nostrum partiendo has ei, at pro quidam quodsi blandit, an cum sanctus dolorem.\n    Maiorum accusamus at eam, vim et prima paulo oporteat. In viris soleat accusamus\n    per, eius assueverit id est, ius no case ponderum assueverit. Est graeco saperet\n    ex,\n    vix an prompta forensibus. Causae fabellas oporteat ei vix, at usu summo oratio\n    mediocritatem, eu tacimates indoctum mei.\n  </p>\n  <p>\n    Posse erroribus te qui, quo at commodo vivendo, te nec debet epicurei. Ex ridens\n    salutatus maiestatis ius, no cum dolores fabellas mnesarchum. Est ex modus\n    apeirian\n    constituto, ex nec altera bonorum salutatus. Dicunt accumsan dignissim vel in,\n    brute\n    invenire salutatus ea qui. Etiam cotidieque disputationi per cu, eam prima\n    pertinacia et, et indoctum vituperatoribus pri.\n  </p>\n  <p>\n    Agam ancillae abhorreant in vix. Mel nulla recteque repudiare te, an sit dico\n    iracundia, pri stet deterruisset no. Audiam lucilius cu usu, solet molestie\n    sententiae vis ea. Ad has magna feugait delicata. An eam nihil periculis.\n  </p>\n  <p>\n    Alii albucius mea ad. Aeterno maiorum no eos. Dolore aperiri ad has. Duo liber\n    homero iisque an. Suscipit oporteat ne vix, mei quem persius labores ea. Homero\n    everti feugait quo ut.\n  </p>\n  <p>Lorem ipsum dolor sit amet, vel cu equidem platonem vituperata, et erroribus\n    adipiscing sadipscing quo. Malorum invenire nec cu, ex possit scriptorem nam.\n    Maiestatis reprimique eos in, te eam diam facer alterum, legimus pertinax pro\n    no. Ei\n    ius imperdiet dissentiunt liberavisse.\n  </p>\n  <p>\n    Per et zril munere fuisset. Usu cu omittantur suscipiantur. Id vix aperiam\n    maiorum,\n    in bonorum conceptam mel. Inimicus expetenda democritum qui ad.\n  </p>\n  <p>\n    Vidit utinam munere eam ex. Qui iuvaret percipitur adversarium ei. Sea te\n    eruditi\n    praesent. Ad vix habeo utamur electram, at paulo delenit ius.\n  </p>\n  <p>\n    Vidisse volutpat ex nec, cu idque simul voluptatum his. In vel iusto doctus, et\n    quis\n    nominati cum. Ei purto legere recusabo sed, mel invenire patrioque et. Eu quo\n    iuvaret mentitum theophrastus, munere nusquam id cum, ei eos tacimates perpetua.\n    Per\n    no porro facete albucius.\n  </p>\n  <p>\n    Dicit aliquip dolorem ex usu, detraxit partiendo posidonium id vix. Meliore\n    contentiones id vix, pro te dicam utroque volumus. Possit omittam et vel, ius\n    sumo\n    dolorem civibus te, cu sed hinc iisque lucilius. Ex vis eius zril legere, harum\n    nominati his in. Dissentiunt ullamcorper deterruisset nec id.\n  </p>\n  <p>\n    Per paulo admodum consequat id, habemus explicari conclusionemque vix te. Ea has\n    graeci labitur, id quo viderer placerat. Ex nam esse noluisse, at cum ludus\n    omnium\n    definiebas. Regione postulant vituperatoribus ut mel, audiam dolorum te his. At\n    dicam dignissim persequeris per, eam ea quas omnesque.\n  </p>\n  <p>\n    Nostrum partiendo has ei, at pro quidam quodsi blandit, an cum sanctus dolorem.\n    Maiorum accusamus at eam, vim et prima paulo oporteat. In viris soleat accusamus\n    per, eius assueverit id est, ius no case ponderum assueverit. Est graeco saperet\n    ex,\n    vix an prompta forensibus. Causae fabellas oporteat ei vix, at usu summo oratio\n    mediocritatem, eu tacimates indoctum mei.\n  </p>\n  <p>\n    Posse erroribus te qui, quo at commodo vivendo, te nec debet epicurei. Ex ridens\n    salutatus maiestatis ius, no cum dolores fabellas mnesarchum. Est ex modus\n    apeirian\n    constituto, ex nec altera bonorum salutatus. Dicunt accumsan dignissim vel in,\n    brute\n    invenire salutatus ea qui. Etiam cotidieque disputationi per cu, eam prima\n    pertinacia et, et indoctum vituperatoribus pri.\n  </p>\n  <p>\n    Agam ancillae abhorreant in vix. Mel nulla recteque repudiare te, an sit dico\n    iracundia, pri stet deterruisset no. Audiam lucilius cu usu, solet molestie\n    sententiae vis ea. Ad has magna feugait delicata. An eam nihil periculis.\n  </p>\n  <p>\n    Alii albucius mea ad. Aeterno maiorum no eos. Dolore aperiri ad has. Duo liber\n    homero iisque an. Suscipit oporteat ne vix, mei quem persius labores ea. Homero\n    everti feugait quo ut.\n  </p>\n\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

@@ -1,1 +1,1 @@
-export default ['router-nav.html'];
+export default ['router-nav.html', 'text-filler.html'];

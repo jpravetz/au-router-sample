@@ -9,7 +9,10 @@ export class RootRoutes extends RouteFactory {
   get routeData () {
     return [
       {
-        route: ['app', ''],
+        route: '', redirect: 'app'
+      },
+      {
+        route: 'app',
         name: 'app'
       },
       {

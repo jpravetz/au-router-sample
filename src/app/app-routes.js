@@ -9,8 +9,13 @@ export class AppRoutes extends RouteFactory {
   get routeData () {
     return [
       {
+        route: '',
+        redirect: 'dashboard'
+      },
+      {
         route: ['dashboard', ''],
-        name: 'dashboard'
+        name: 'dashboard',
+        title: 'Dashboard'
       },
       {
         route: 'video'

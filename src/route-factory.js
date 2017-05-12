@@ -20,31 +20,35 @@ export class RouteFactory {
     options = options || {};
     const rootFolder = options.folder ? ('./' + options.folder + '/') : './';
     const result = this.routeData.map(r => {
-      let moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
-      let auth = getValue('boolean', options.auth, r.auth, false);
-      let nav = getValue('boolean', options.nav, r.nav, true);
-      let route = options.routePath ? (options.routePath + '/' + r.route) : r.route;
-      let href = r.href;
-      if (!href && options.href === true) {
-        href = ( typeof r.route === 'string') ? r.route : r.route[0];
-      }
-      let item = {
-        route: route,
-        name: r.name || r.route,
-        title: r.title || r.route,
-        auth: auth,
-        nav: nav
-      };
-      if (href !== undefined) {
-        item.href = href;
-      }
-      if (options.viewPort) {
-        item.viewPorts = {};
-        item.viewPorts[options.viewPort] = { moduleId: moduleId };
+      if (r.redirect) {
+        return r;
       } else {
-        item.moduleId = moduleId;
+        let moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
+        let auth = getValue('boolean', options.auth, r.auth, false);
+        let nav = getValue('boolean', options.nav, r.nav, true);
+        let route = options.routePath ? (options.routePath + '/' + r.route) : r.route;
+        let href = r.href;
+        if (!href && options.href === true) {
+          href = ( typeof r.route === 'string') ? r.route : r.route[0];
+        }
+        let item = {
+          route: route,
+          name: r.name || r.route,
+          title: r.title || r.route,
+          auth: auth,
+          nav: nav
+        };
+        if (href !== undefined) {
+          item.href = href;
+        }
+        if (options.viewPort) {
+          item.viewPorts = {};
+          item.viewPorts[options.viewPort] = { moduleId: moduleId };
+        } else {
+          item.moduleId = moduleId;
+        }
+        return item;
       }
-      return item;
     });
     return result;
   }
