@@ -13,7 +13,7 @@ export class AppRoutes extends RouteFactory {
         redirect: 'dashboard'
       },
       {
-        route: ['dashboard', ''],
+        route: 'dashboard',
         name: 'dashboard',
         title: 'Dashboard'
       },
