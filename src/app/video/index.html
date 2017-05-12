@@ -1,21 +1,17 @@
 <template>
   <div class="card">
+
+    <div class="card-header">
+      app/video/index.html
+    </div>
+
     <div class="card-block">
       <h1 class="card-title">Video</h1>
       <p class="card-text">${message}</p>
       <a href="#" class="btn btn-primary">Maybe save changes</a>
     </div>
 
-    <div class="card-block">
-      <h2 class="card-title">router.navigation array:</h2>
-      <ul class="list-group list-group-flush">
-        <li repeat.for="row of router.navigation" class="list-group-item">
-          <a class="card-link" href.bind="row.href">${row.title}</a>
-        </li>
-      </ul>
-    </div>
-
-    <router-nav router="router"></router-nav>
+    <router-nav router.bind="router"></router-nav>
 
 
   </div>

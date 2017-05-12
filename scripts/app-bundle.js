@@ -196,6 +196,12 @@ define('route-factory',['exports'], function (exports) {
     value: true
   });
 
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -230,8 +236,8 @@ define('route-factory',['exports'], function (exports) {
       var rootFolder = options.folder ? './' + options.folder + '/' : './';
       var result = this.routeData.map(function (r) {
         var moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
-        var auth = typeof options.auth === 'boolean' ? options.auth : r.auth;
-        var nav = typeof options.nav === 'boolean' ? options.nav : r.nav;
+        var auth = getValue('boolean', options.auth, r.auth, false);
+        var nav = getValue('boolean', options.nav, r.nav, true);
         var route = options.routePath ? options.routePath + '/' + r.route : r.route;
         var href = r.href;
         if (!href && options.href === true) {
@@ -240,14 +246,10 @@ define('route-factory',['exports'], function (exports) {
         var item = {
           route: route,
           name: r.name || r.route,
-          title: r.title || r.route
+          title: r.title || r.route,
+          auth: auth,
+          nav: nav
         };
-        if (auth !== undefined) {
-          item.auth = auth;
-        }
-        if (nav !== undefined) {
-          item.nav = nav;
-        }
         if (href !== undefined) {
           item.href = href;
         }
@@ -271,6 +273,15 @@ define('route-factory',['exports'], function (exports) {
 
     return RouteFactory;
   }();
+
+  function getValue(type) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    for (var adx = 0; adx < args.length; adx++) {
+      if (_typeof(args[adx]) === type) {
+        return args[adx];
+      }
+    }
+  }
 });
 define('app/app-routes',['exports', '../route-factory'], function (exports, _routeFactory) {
   'use strict';
@@ -435,28 +446,6 @@ define('app/index',['exports', 'aurelia-framework', './app-routes'], function (e
     return App;
   }()) || _class);
 });
-define('app-login/index',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.AppLogin = undefined;
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var logger = _aureliaFramework.LogManager.getLogger('app.login');
-
-  var AppLogin = exports.AppLogin = function AppLogin() {
-    _classCallCheck(this, AppLogin);
-
-    logger.debug('constructor');
-  };
-});
 define('app-signup/index',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
   'use strict';
 
@@ -472,6 +461,28 @@ define('app-signup/index',['exports', 'aurelia-framework'], function (exports, _
   }
 
   var logger = _aureliaFramework.LogManager.getLogger('app.signup');
+
+  var AppLogin = exports.AppLogin = function AppLogin() {
+    _classCallCheck(this, AppLogin);
+
+    logger.debug('constructor');
+  };
+});
+define('app-login/index',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.AppLogin = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var logger = _aureliaFramework.LogManager.getLogger('app.login');
 
   var AppLogin = exports.AppLogin = function AppLogin() {
     _classCallCheck(this, AppLogin);
@@ -591,11 +602,11 @@ define('resources/value-converters/index',["exports"], function (exports) {
   exports.default = [];
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"bootstrap/css/bootstrap.css\"></require>\n\n  <div class=\"container\" if.bind=\"!loaded || error\">\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">${message}</h1>\n      <p if.bind=\"error\" class=\"card-text\">If this problem persists, try clearing your session</p>\n      <button type=\"button\" class=\"btn btn-primary btn-lg\" click.delegate=\"clearSession()\"\n              if.bind=\"error\"> Clear Session\n      </button>\n    </div>\n  </div>\n\n  <router-view name=\"main\" if.bind=\"loaded\"></router-view>\n\n</template>\n"; });
-define('text!app/index.html', ['module'], function(module) { module.exports = "<template>\n  <!--<require from=\"./app-sidebar/index\"></require>-->\n  <!--<require from=\"./app-alerts/index\"></require>-->\n\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-lg-3 col-md-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Sidebar\n          </div>\n          <div class=\"card-block\">\n            <h2>Routes</h2>\n            <ul class=\"list-group list-group-flush\">\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: dashboard\">route-href=\"route:\n                dashboard\"</a></li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: video\">route-href=\"route: video\"</a>\n              </li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: profile\">route-href=\"route:\n                profile\"</a></li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: login\">route-href=\"route: login\"</a>\n              </li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: signup\">route-href=\"route: signup\"</a>\n              </li>\n            </ul>\n          </div>\n        </div>\n      </div>\n      <div class=\"col-lg-9 col-md-8\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Content goes in card block below\n          </div>\n          <div class=\"card-block\">\n            <router-view name=\"content\"></router-view>\n          </div>\n        </div>\n        <div class=\"card\">\n          <p>${router.navigation.length}</p>\n          <router-nav router=\"router\"></router-nav>\n        </div>\n\n        <div class=\"card\">\n\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">custom router.navigation array: (len=${router.navigation.length})</h4>\n            <ul class=\"list-group list-group-flush\">\n              <li repeat.for=\"row of router.navigation\" class=\"list-group-item\">\n                <a class=\"card-link\" href.bind=\"row.href\">${row.title}</a>\n              </li>\n            </ul>\n          </div>\n        </div>\n\n      </div>\n    </div>\n  </div>\n\n</template>\n"; });
+define('text!app/index.html', ['module'], function(module) { module.exports = "<template>\n  <!--<require from=\"./app-sidebar/index\"></require>-->\n  <!--<require from=\"./app-alerts/index\"></require>-->\n\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-lg-3 col-md-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Sidebar\n          </div>\n          <div class=\"card-block\">\n            <h2>Routes</h2>\n            <ul class=\"list-group list-group-flush\">\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: dashboard\">route-href=\"route:\n                dashboard\"</a></li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: video\">route-href=\"route: video\"</a>\n              </li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: profile\">route-href=\"route:\n                profile\"</a></li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: login\">route-href=\"route: login\"</a>\n              </li>\n              <li class=\"list-group-item\"><a class=\"card-link\" route-href=\"route: signup\">route-href=\"route: signup\"</a>\n              </li>\n            </ul>\n          </div>\n        </div>\n      </div>\n      <div class=\"col-lg-9 col-md-8\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Content goes in card block below\n          </div>\n          <div class=\"card-block\">\n            <router-view name=\"content\"></router-view>\n          </div>\n        </div>\n\n        <div class=\"card mt-3\">\n          <div class=\"card-header\">\n            app/index.html\n          </div>\n          <router-nav router.bind=\"router\"></router-nav>\n        </div>\n\n      </div>\n    </div>\n  </div>\n\n</template>\n"; });
 define('text!app-login/index.html', ['module'], function(module) { module.exports = "<template>\n\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-lg-4 col-md-5 offset-lg-3 offset-md-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Logo here\n          </div>\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">Login page</h4>\n            <p class=\"card-text\">Other pages</p>\n            <ul>\n              <li><a href=\"#\" click.trigger=\"navTo('#/app/dashboard')\">navTo('#/app/dashboard')</a></li>\n              <!--<li><a route-href=\"route: video\">Video</a></li>-->\n              <li><a route-href=\"route: app\">route-href=\"route: app\"</a></li>\n              <li><a route-href=\"route: signup\">route-href=\"route: signup\"</a></li>\n            </ul>\n          </div>\n          <router-nav router=\"router\"></router-nav>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</template>\n"; });
 define('text!app-signup/index.html', ['module'], function(module) { module.exports = "<template>\n\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-lg-4 col-md-5 offset-lg-3 offset-md-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            Logo here\n          </div>\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">Signup page</h4>\n            <p class=\"card-text\">Other pages</p>\n            <ul>\n              <li><a href=\"#\" click.trigger=\"navTo('#/app/dashboard')\">navTo('#/app/dashboard')</a></li>\n              <!--<li><a route-href=\"route: video\">Video</a></li>-->\n              <li><a route-href=\"route: app\">route-href=\"route: app</a></li>\n              <li><a route-href=\"route: login\">route-href=\"route: login</a></li>\n            </ul>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</template>\n"; });
-define('text!app/dashboard/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Dashboard</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <div class=\"card-block\">\n      <h2 class=\"card-title\">Links at this router level:</h2>\n      <ul class=\"list-group list-group-flush\">\n        <li repeat.for=\"row of router.navigation\" class=\"list-group-item\">\n          <a class=\"card-link\" href.bind=\"row.href\">${row.title}</a>\n        </li>\n      </ul>\n    </div>\n\n  </div>\n</template>\n"; });
-define('text!app/profile/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Profile</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n  </div>\n</template>\n"; });
-define('text!app/video/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Video</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <div class=\"card-block\">\n      <h2 class=\"card-title\">router.navigation array:</h2>\n      <ul class=\"list-group list-group-flush\">\n        <li repeat.for=\"row of router.navigation\" class=\"list-group-item\">\n          <a class=\"card-link\" href.bind=\"row.href\">${row.title}</a>\n        </li>\n      </ul>\n    </div>\n\n    <router-nav router=\"router\"></router-nav>\n\n\n  </div>\n</template>\n"; });
+define('text!app/dashboard/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/dashboard/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Dashboard Card</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n  </div>\n</template>\n"; });
+define('text!app/profile/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/profile/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Profile Card</h1>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n  </div>\n</template>\n"; });
+define('text!app/video/index.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"card\">\n\n    <div class=\"card-header\">\n      app/video/index.html\n    </div>\n\n    <div class=\"card-block\">\n      <h1 class=\"card-title\">Video</h1>\n      <p class=\"card-text\">${message}</p>\n      <a href=\"#\" class=\"btn btn-primary\">Maybe save changes</a>\n    </div>\n\n    <router-nav router.bind=\"router\"></router-nav>\n\n\n  </div>\n</template>\n"; });
 define('text!resources/elements/router-nav.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\n  <div class=\"card-block\">\n    <h4 class=\"card-title\">router.navigation array (len=${router.navigation.length}):</h4>\n    <ul class=\"list-group list-group-flush\">\n      <li repeat.for=\"row of router.navigation\" class=\"list-group-item\">\n        <a class=\"card-link\" href.bind=\"row.href\">${row.title}</a>\n      </li>\n    </ul>\n  </div>\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

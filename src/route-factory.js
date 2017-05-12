@@ -21,8 +21,8 @@ export class RouteFactory {
     const rootFolder = options.folder ? ('./' + options.folder + '/') : './';
     const result = this.routeData.map(r => {
       let moduleId = rootFolder + (r.folder || r.name || r.route) + '/index';
-      let auth = (typeof options.auth === 'boolean') ? options.auth : r.auth;
-      let nav = (typeof options.nav === 'boolean') ? options.nav : r.nav;
+      let auth = getValue('boolean', options.auth, r.auth, false);
+      let nav = getValue('boolean', options.nav, r.nav, true);
       let route = options.routePath ? (options.routePath + '/' + r.route) : r.route;
       let href = r.href;
       if (!href && options.href === true) {
@@ -31,14 +31,10 @@ export class RouteFactory {
       let item = {
         route: route,
         name: r.name || r.route,
-        title: r.title || r.route
+        title: r.title || r.route,
+        auth: auth,
+        nav: nav
       };
-      if (auth !== undefined) {
-        item.auth = auth;
-      }
-      if (nav !== undefined) {
-        item.nav = nav;
-      }
       if (href !== undefined) {
         item.href = href;
       }
@@ -53,4 +49,13 @@ export class RouteFactory {
     return result;
   }
 
+}
+
+function getValue (type) {
+  let args = Array.prototype.slice.call(arguments, 1);
+  for (let adx = 0; adx < args.length; adx++) {
+    if (typeof args[adx] === type) {
+      return args[adx];
+    }
+  }
 }
