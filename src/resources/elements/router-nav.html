@@ -1,9 +1,9 @@
 <template bindable="router">
   <div class="card-block">
-    <h4 class="card-title">router.navigation array (len=${router.navigation.length}):</h4>
+    <h4 class="card-title">router.navigation</h4>
     <ul class="list-group list-group-flush">
       <li repeat.for="row of router.navigation" class="list-group-item">
-        <a class="card-link" href.bind="row.href">${row.title}</a>
+        <a class="card-link" href.bind="row.href">"${row.title}"</a>
       </li>
     </ul>
   </div>
