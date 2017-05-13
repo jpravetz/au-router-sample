@@ -1,16 +1,17 @@
-import {LogManager} from 'aurelia-framework';
+import {inject,LogManager} from 'aurelia-framework';
+import {AuthService} from '../services/auth-service';
 
 let logger = LogManager.getLogger('app.login');
 
+@inject(AuthService)
 export class AppLogin {
-  constructor () {
+  constructor (authService) {
+    this.auth = authService;
     logger.debug('constructor');
-    localStorage.setItem('au-router-sample-login', false);
   }
 
-  login () {
-    localStorage.setItem('au-router-sample-login', true);
-    this.router.navigate('#/app/dashboard');
+  login (email) {
+    this.auth.login(email,'xxxxx');
   }
 
 }

@@ -25,6 +25,9 @@
             </ul>
           </div>
           <router-nav router.bind="router"></router-nav>
+          <div class="card-block" if.bind="router.isNavigating">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+          </div>
         </div>
       </div>
       <div class="col-lg-9 col-md-8">

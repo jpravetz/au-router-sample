@@ -17,12 +17,12 @@ export class RootRoutes extends RouteFactory {
         auth: true
       },
       {
-        route: 'app-login',
+        route: 'login',
         folder: 'app-login',
         name: 'login'
       },
       {
-        route: 'app-signup',
+        route: 'signup',
         folder: 'app-signup',
         name: 'signup'
       }
