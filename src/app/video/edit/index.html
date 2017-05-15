@@ -5,9 +5,17 @@
       app/video/edit/index.html
     </div>
 
-    <div class="card-block">
-      <h1 class="card-title">Video Edit</h1>
+    <div class="card-block" if.bind="video">
+      <h3 class="card-title">${video.name}</h3>
+      <div class="card-text">${video.id}</div>
+      <div class="card-text">${video.description}</div>
     </div>
+
+    <div class="card-block" if.bind="!video">
+      <h3 class="card-title">Video not found</h3>
+    </div>
+
+    <router-view></router-view>
 
     <router-nav router.bind="router"></router-nav>
 

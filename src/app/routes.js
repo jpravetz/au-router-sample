@@ -1,6 +1,6 @@
 import {RouteFactory} from '../route-factory';
 
-export class AppRoutes extends RouteFactory {
+export class Routes extends RouteFactory {
 
   constructor () {
     super();

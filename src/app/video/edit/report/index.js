@@ -1,25 +1,26 @@
 import {inject, LogManager} from 'aurelia-framework';
-import {VideoPage} from '../index';
+import {VideoEditPage} from '../index';
 import {Routes} from './routes';
 
 let logger = LogManager.getLogger('app.video.edit');
 
-@inject(VideoPage, Routes)
-export class VideoEditPage {
-  constructor (videoPage, routes) {
-    logger.debug('constructor');
-    this.videoPage = videoPage;
+@inject(VideoEditPage, Routes)
+export class VideoEditReportPage {
+  constructor (videoEditPage,routes) {
+    this.message = 'VideoEditReportPage';
     this.routes = routes;
+    this.videoEditPage = videoEditPage;
   }
 
   activate (params) {
     logger.debug('activate', params);
-    this.video = this.videoPage.getById(params.id);
+    this.video = this.videoEditPage.video;
   }
+
 
   configureRouter (config, router) {
     this.router = router;
-    config.title = 'Video Edit Pages';
+    config.title = 'Video Edit Report Pages';
     const routeConfig = this.routes.routes(this.routeOptions);
     config.map(routeConfig);
     logger.debug('Configured app routes', routeConfig.map(c => c.name));

@@ -1,6 +1,6 @@
 import {RouteFactory} from './route-factory';
 
-export class RootRoutes extends RouteFactory {
+export class Routes extends RouteFactory {
 
   constructor () {
     super();
@@ -13,15 +13,21 @@ export class RootRoutes extends RouteFactory {
       },
       {
         route: 'app',
-        name: 'app'
+        name: 'app',
+        auth: true
       },
       {
-        route: 'app-login',
+        route: 'login',
         folder: 'app-login',
         name: 'login'
       },
       {
-        route: 'app-signup',
+        route: 'logout',
+        folder: 'app-logout',
+        name: 'logout'
+      },
+      {
+        route: 'signup',
         folder: 'app-signup',
         name: 'signup'
       }
