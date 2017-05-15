@@ -12,9 +12,14 @@ export class AuthService {
     if (!instance) {
       this.eventAggregator = eventAggregator;
       this.router = router;
+      this.loggedIn = false;
       instance = this;
     }
     return instance;
+  }
+
+  get isLoggedIn () {
+    return this.loggedIn;
   }
 
   login (email, password) {
@@ -22,6 +27,7 @@ export class AuthService {
     logger.debug('login');
     return Promise.resolve({ auth: true })
       .then((resp) => {
+        this.loggedIn = true;
         return this.router.navigate('/');
       });
   }
@@ -31,6 +37,7 @@ export class AuthService {
     logger.debug('signup');
     return Promise.resolve({ auth: true })
       .then((resp) => {
+        this.loggedIn = true;
         return this.router.navigate('/');
       });
   }
@@ -39,11 +46,12 @@ export class AuthService {
     return this.email ? true : false
   }
 
-  logout (redirect) {
+  logout () {
     this.email = undefined;
     logger.debug('logout');
     return Promise.resolve()
       .then(() => {
+        this.loggedIn = false;
         this.router.navigate('#/login');
       });
   }

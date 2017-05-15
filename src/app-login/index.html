@@ -9,6 +9,16 @@
           </div>
           <div class="card-block">
             <h4 class="card-title">Login page</h4>
+            <form>
+              <div class="form-group">
+                <label for="username">Email address</label>
+                <input type="email" class="form-control" id="username" aria-describedby="emailHelp" value.bind="email"
+                       placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.
+                </small>
+              </div>
+            </form>
+
             <a href="#" class="btn btn-primary" click.delegate="login()">Login</a>
 
             <h4 class="card-text">Other pages</h4>

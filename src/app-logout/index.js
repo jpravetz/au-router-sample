@@ -1,10 +1,13 @@
 import {inject, LogManager} from 'aurelia-framework';
 import {AuthService} from '../services/auth-service';
 
-let logger = LogManager.getLogger('app.login');
+let logger = LogManager.getLogger('app.logout');
+
 
 @inject(AuthService)
-export class AppLogin {
+
+export class AppLogout {
+
   constructor (authService) {
     this.auth = authService;
     logger.debug('constructor');
@@ -12,19 +15,12 @@ export class AppLogin {
 
   activate () {
     logger.debug('activate...');
-    setTimeout(() => {
-      logger.debug('activated');
-    }, 500);
+    this.auth.logout()
+      .then(response => {
+        logger.debug('ok logged out on  logout.js');
+      })
+      .catch(err => {
+        logger.debug('error logged out  logout.js');
+      });
   }
-
-  attached () {
-    logger.debug('attached');
-  }
-
-
-  login () {
-    logger.debug('login');
-    this.auth.login(this.email, 'xxxxx');
-  }
-
 }

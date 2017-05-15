@@ -1,12 +1,14 @@
 import {inject, LogManager} from 'aurelia-framework';
-import {AppRoutes} from './app-routes';
+import {Routes} from './routes';
+import {AuthService} from '../services/auth-service';
 
 let logger = LogManager.getLogger('app.app');
 
-@inject(AppRoutes)
+@inject(Routes, AuthService)
 export class App {
-  constructor (appRoutes) {
-    this.appRoutes = appRoutes;
+  constructor (routes, authService) {
+    this._routes = routes;
+    this.auth = authService;
     this.routeOptions = { viewPort: 'content' };
     logger.debug('constructor');
   }
@@ -25,14 +27,14 @@ export class App {
   configureRouter (config, router) {
     this.router = router;
     config.title = 'App Pages';
-    const routeConfig = this.appRoutes.routes(this.routeOptions);
+    const routeConfig = this._routes.routes(this.routeOptions);
     config.map(routeConfig);
     logger.debug('Configured app routes', routeConfig.map(c => c.name));
     logger.debug('Configured app routes', this.router.navigation);
   }
 
   get routes () {
-    return routes;
+    return _routes;
   }
 
   navTo (routeName) {

@@ -1,15 +1,15 @@
 import {inject, LogManager} from 'aurelia-framework';
-import {RootRoutes} from './root-routes';
+import {Routes} from './routes';
 import {AuthService} from './services/auth-service';
 import {Redirect} from 'aurelia-router';
 //import {AuthorizeStep} from './services/authorize-step';
 
 let logger = LogManager.getLogger('app.root');
 
-@inject(RootRoutes, AuthService)
+@inject(Routes, AuthService)
 export class App {
-  constructor (rootRoutes, authService) {
-    this.rootRoutes = rootRoutes;
+  constructor (routes, authService) {
+    this.routes = routes;
     this.auth = authService;
     this.message = 'Loading...';
     this.loaded = false;
@@ -38,7 +38,7 @@ export class App {
     let step = new AuthorizeStep(this.auth);
     config.title = 'Test Console';
     config.addAuthorizeStep(step);
-    const routeConfig = this.rootRoutes.routes(this.routeOptions);
+    const routeConfig = this.routes.routes(this.routeOptions);
     config.map(routeConfig);
     logger.debug('Configured root routes', routeConfig.map(c => c.name));
     logger.debug('Configured root routes', this.router.navigation);
@@ -56,14 +56,14 @@ export class AuthorizeStep {
   }
 
   run (navInstruction, next) {
-    let isLoggedIn = this.auth.isAuthenticated();
+    let isLoggedIn = this.auth.isLoggedIn;
 
     if (navInstruction.getAllInstructions().some(i => i.config.auth)) {
       if (!isLoggedIn) {
         return next.cancel(new Redirect('login'));
       }
-
-      return next();
     }
+
+    return next();
   }
 }

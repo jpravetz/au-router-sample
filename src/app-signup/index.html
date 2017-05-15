@@ -9,7 +9,16 @@
           </div>
           <div class="card-block">
             <h4 class="card-title">Signup page</h4>
-            <a href="#" class="btn btn-primary" click.delegate="login()">Login</a>
+            <form>
+              <div class="form-group">
+                <label for="username">Email address</label>
+                <input type="email" class="form-control" id="username" aria-describedby="emailHelp" value.bind="email"
+                       placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.
+                </small>
+              </div>
+            </form>
+            <a href="#" class="btn btn-primary" click.delegate="signup()">Signup</a>
             <p class="card-text">Other pages</p>
             <ul>
               <li><a href="#" click.trigger="navTo('#/app/dashboard')">navTo('#/app/dashboard')</a></li>
