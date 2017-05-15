@@ -10,6 +10,9 @@
             Sidebar (app/index.html)
           </div>
           <div class="card-block">
+            <div class="card-text">Logged in as: ${auth.email}</div>
+          </div>
+          <div class="card-block">
             <h2>Routes</h2>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><a class="card-link" route-href="route: dashboard">route-href="route:
@@ -22,9 +25,15 @@
               </li>
               <li class="list-group-item"><a class="card-link" route-href="route: signup">route-href="route: signup"</a>
               </li>
+              </li>
+              <li class="list-group-item"><a class="card-link" route-href="route: logout">route-href="route: logout"</a>
+              </li>
             </ul>
           </div>
           <router-nav router.bind="router"></router-nav>
+          <div class="card-block" if.bind="router.isNavigating">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+          </div>
         </div>
       </div>
       <div class="col-lg-9 col-md-8">
