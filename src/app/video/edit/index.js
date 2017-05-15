@@ -14,7 +14,7 @@ export class VideoEditPage {
 
   activate (params) {
     logger.debug('activate', params);
-    this.video = this.videoPage.getById(params.id);
+    this.video = this.videoPage.getById(params);
   }
 
   configureRouter (config, router) {

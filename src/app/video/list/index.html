@@ -9,7 +9,7 @@
       <h1 class="card-title">Video List</h1>
       <ul class="list-group list-group-flush">
         <li repeat.for="video of videoPage.videos" class="list-group-item">
-          <a class="card-link" route-href="route: edit; params.bind: { id: video.id }">"${video.name}"</a>
+          <a class="card-link" route-href="route: edit; params.bind: { pid: video.pid, xid: video.xid }">"${video.name}"</a>
         </li>
       </ul>
     </div>

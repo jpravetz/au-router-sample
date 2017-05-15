@@ -11,7 +11,8 @@ export class VideoPage {
     this.videos = [];
     for (let vdx = 0; vdx < 10; vdx++) {
       let obj = {
-        id: `VID000${vdx}`,
+        pid: `PARENT000${vdx}`,
+        xid: `VID000${vdx}`,
         name: `Video #${vdx}`,
         description: `This is Video #${vdx} of 10 Videos`
       };
@@ -19,9 +20,9 @@ export class VideoPage {
     }
   }
 
-  getById (id) {
+  getById (params) {
     for (let vdx = 0; vdx < this.videos.length; vdx++) {
-      if (this.videos[vdx].id === id) {
+      if (this.videos[vdx].pid === params.pid && this.videos[vdx].xid === params.xid) {
         return this.videos[vdx];
       }
     }

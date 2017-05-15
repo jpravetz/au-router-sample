@@ -13,15 +13,14 @@ export class Routes extends RouteFactory {
       //   redirect: 'list'
       // },
       {
-        route: ['list',''],
+        route: ['list', ''],
         name: 'list',
         title: 'List'
       },
       {
-        route: 'edit/:id',
+        route: 'edit/:pid/:xid',
         name: 'edit',
-        href: 'edit',
-        nav: false
+        href: 'edit'
       }
     ];
   }
