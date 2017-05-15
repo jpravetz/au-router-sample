@@ -9,7 +9,3 @@ npm install aurelia-cli -g
 ```
 
 Refer to ```package.json/scripts``` for build instructions.
-
-## Todo
-
-Add AuthorizeStep to root routes.
