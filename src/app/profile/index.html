@@ -13,7 +13,11 @@
     <router-nav router.bind="router"></router-nav>
 
     <div class="card-block">
-      <text-filler></text-filler>
+      And now, it's time for a secret message: <secret-message msg.bind="title" title.bind="title" message.bind="message"></secret-message>
+    </div>
+
+    <div class="card-block">
+      <test-card title.bind="title" message.bind="message"></test-card>
     </div>
 
   </div>
